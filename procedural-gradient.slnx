@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="procedural-gradient/procedural-gradient.vcxproj" Id="893f0109-922f-4f39-b829-fd04783e1a90" />
+</Solution>
