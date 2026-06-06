@@ -1,4 +1,4 @@
-#include "../pch.h"
+#include "pch.h"
 
 #include "system.h"
 
@@ -9,14 +9,62 @@ namespace GP
     {
         int32_t windowWidth = 0;
         int32_t windowHeight = 0;
-
         InitWindows(windowWidth, windowHeight);
 
         return true;
     }
 
+    void CSystem::Run()
+    {
+        MSG msg{};
+
+        for (;;)
+        {
+            if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+
+            if (msg.message == WM_QUIT)
+            {
+                break;
+            }
+
+            if (!Frame())
+            {
+                break;
+            }
+        }
+    }
+
+    void CSystem::Shutdown()
+    {
+        ShutdownWindows();
+    }
+
+    LRESULT CSystem::MessageHandler(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        switch (uMsg)
+        {
+            default:
+            {
+                return DefWindowProc(hWnd, uMsg, wParam, lParam);
+            }
+        }
+
+        return 0;
+    }
+
+    bool CSystem::Frame()
+    {
+        return true;
+    }
+
     void CSystem::InitWindows(int32_t &windowWidth, int32_t &windowHeight)
     {
+        applicationHandler = this;
+
         m_hInstance = GetModuleHandle(nullptr);
         m_applicationName = L"Procedural Gradient";
 
@@ -41,7 +89,7 @@ namespace GP
 
         int32_t posX{};
         int32_t posY{};
-        if (true) // TODO: Fullscreen global
+        if (false) // TODO: Fullscreen global
         {
             DEVMODE dmScreenSettings{};
             dmScreenSettings.dmSize = sizeof(dmScreenSettings);
@@ -69,7 +117,44 @@ namespace GP
         ShowWindow(m_hWnd, SW_SHOW);
         SetForegroundWindow(m_hWnd);
         SetFocus(m_hWnd);
+        ShowCursor(true); // TODO: control
+    }
+
+    void CSystem::ShutdownWindows()
+    {
         ShowCursor(true);
+
+        if (false) // TODO: Fullscreen global
+        {
+            ChangeDisplaySettings(nullptr, 0);
+        }
+
+        DestroyWindow(m_hWnd);
+        m_hWnd = nullptr;
+
+        UnregisterClass(m_applicationName, m_hInstance);
+        m_hInstance = nullptr;
+    }
+
+    LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        switch (uMsg)
+        {
+            case WM_DESTROY:
+            {
+                PostQuitMessage(0);
+                return 0;
+            }
+            case WM_CLOSE:
+            {
+                PostQuitMessage(0);
+                return 0;
+            }
+            default:
+            {
+                return applicationHandler->MessageHandler(hWnd, uMsg, wParam, lParam);
+            }
+        }
     }
 
 } // namespace GP

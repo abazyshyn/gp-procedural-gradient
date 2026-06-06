@@ -1,6 +1,16 @@
 #include "pch.h"
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR psCmdline, int iCmdshow)
+#include "system/system.h"
+
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ PSTR psCmdline, _In_ int iCmdshow)
 {
-    return 0;
+    GP::CSystem system{};
+
+    if (system.Init())
+    {
+        system.Run();
+    }
+
+    system.Shutdown();
+    return EXIT_SUCCESS;
 }

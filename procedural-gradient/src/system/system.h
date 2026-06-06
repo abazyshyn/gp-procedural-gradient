@@ -6,8 +6,6 @@ namespace GP
     class CSystem
     {
     public:
-        CSystem();
-
         bool Init();
         void Run();
         void Shutdown();
@@ -17,7 +15,7 @@ namespace GP
     private:
         bool Frame();
         void InitWindows(int32_t &windowWidth, int32_t &windowHeight);
-        void Shutdown();
+        void ShutdownWindows();
 
     private:
         HWND m_hWnd;
@@ -25,9 +23,14 @@ namespace GP
         LPCWSTR m_applicationName;
     };
 
+    /////////////
+    // GLOBALS //
+    /////////////
+    static CSystem *applicationHandler = nullptr;
+
     /////////////////////////
     // FUNCTION PROTOTYPES //
     /////////////////////////
-    static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+    static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 } // namespace GP
