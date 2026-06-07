@@ -89,7 +89,7 @@ namespace GP
 
         int32_t posX{};
         int32_t posY{};
-        if (false) // TODO: Fullscreen global
+        if (FULL_SCREEN)
         {
             DEVMODE dmScreenSettings{};
             dmScreenSettings.dmSize = sizeof(dmScreenSettings);
@@ -117,14 +117,14 @@ namespace GP
         ShowWindow(m_hWnd, SW_SHOW);
         SetForegroundWindow(m_hWnd);
         SetFocus(m_hWnd);
-        ShowCursor(true); // TODO: control
+        ShowCursor(SHOW_CURSOR);
     }
 
     void CSystem::ShutdownWindows()
     {
-        ShowCursor(true);
+        ShowCursor(SHOW_CURSOR);
 
-        if (false) // TODO: Fullscreen global
+        if (FULL_SCREEN)
         {
             ChangeDisplaySettings(nullptr, 0);
         }

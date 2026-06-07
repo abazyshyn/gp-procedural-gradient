@@ -1,5 +1,10 @@
 #pragma once
 
+///////////////////////
+// MY CLASS INCLUDES //
+///////////////////////
+#include "application/application.h"
+
 namespace GP
 {
 
