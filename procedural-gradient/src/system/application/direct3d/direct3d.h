@@ -35,19 +35,19 @@ namespace GP
         void TurnZBufferOff();
 
     private:
-        IDXGISwapChain *m_SwapChain;
-        ID3D11Device *m_Device;
-        ID3D11DeviceContext *m_DeviceContext;
-        ID3D11RenderTargetView *m_RenderTargetView;
-        ID3D11Texture2D *m_DepthStencilBuffer;
-        ID3D11DepthStencilView *m_DepthStencilState;
-        ID3D11DepthStencilView *m_DepthStencilView;
-        ID3D11RasterizerState *m_RasterizerState;
-        ID3D11DepthStencilState *m_DepthDisabledStencilState;
-        D3D11_VIEWPORT m_Viewport;
-        XMMATRIX m_WorldMatrix;
-        XMMATRIX m_OrthoMatrix;
-        XMMATRIX m_ProjectionMatrix;
+        IDXGISwapChain *m_swapChain;
+        ID3D11Device *m_device;
+        ID3D11DeviceContext *m_deviceContext;
+        ID3D11RenderTargetView *m_renderTargetView;
+        ID3D11Texture2D *m_depthStencilBuffer;
+        ID3D11DepthStencilView *m_depthStencilState;
+        ID3D11DepthStencilView *m_depthStencilView;
+        ID3D11RasterizerState *m_rasterizerState;
+        ID3D11DepthStencilState *m_depthDisabledStencilState;
+        D3D11_VIEWPORT m_viewport;
+        XMMATRIX m_worldMatrix;
+        XMMATRIX m_orthoMatrix;
+        XMMATRIX m_projectionMatrix;
         char m_videoCardDescription[128];
         int32_t m_videoCardMemory;
         bool m_vsync;
