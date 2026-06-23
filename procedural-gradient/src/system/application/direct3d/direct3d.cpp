@@ -123,6 +123,123 @@ namespace GP
             return false;
         }
 
+        // Create the render target view with the back buffer pointer
+        if (FAILED(m_device->CreateRenderTargetView(backBuffer, nullptr, &m_renderTargetView)))
+        {
+            return false;
+        }
+
+        backBuffer->Release();
+        backBuffer = nullptr;
+
+        D3D11_TEXTURE2D_DESC depthBufferDescription{};
+        depthBufferDescription.Width = static_cast<uint32_t>(windowWidth);
+        depthBufferDescription.Height = static_cast<uint32_t>(windowHeight);
+        depthBufferDescription.MipLevels = 1;
+        depthBufferDescription.ArraySize = 1;
+        depthBufferDescription.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+        depthBufferDescription.SampleDesc.Count = 1;
+        depthBufferDescription.SampleDesc.Quality = 0;
+        depthBufferDescription.Usage = D3D11_USAGE_DEFAULT;
+        depthBufferDescription.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+        depthBufferDescription.CPUAccessFlags = 0;
+        depthBufferDescription.MiscFlags = 0;
+
+        if (FAILED(m_device->CreateTexture2D(&depthBufferDescription, nullptr, &m_depthStencilBuffer)))
+        {
+            return false;
+        }
+
+        D3D11_DEPTH_STENCIL_DESC depthStencilDescription{};
+        depthStencilDescription.DepthEnable = true;
+        depthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+        depthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS;
+        depthStencilDescription.StencilEnable = true;
+        depthStencilDescription.StencilReadMask = 0xFF;
+        depthStencilDescription.StencilWriteMask = 0xFF;
+        depthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+        depthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+        depthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+        depthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+        depthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+        depthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+        depthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+        depthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+        if (FAILED(m_device->CreateDepthStencilState(&depthStencilDescription, &m_depthStencilState)))
+        {
+            return false;
+        }
+
+        m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+
+        D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDescription{};
+        depthStencilViewDescription.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+        depthStencilViewDescription.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+        depthStencilViewDescription.Texture2D.MipSlice = 0;
+
+        if (FAILED(m_device->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDescription, &m_depthStencilView)))
+        {
+            return false;
+        }
+
+        m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
+
+        D3D11_RASTERIZER_DESC rasterizerDescription{};
+        rasterizerDescription.AntialiasedLineEnable = false;
+        rasterizerDescription.CullMode = D3D11_CULL_BACK;
+        rasterizerDescription.DepthBias = 0;
+        rasterizerDescription.DepthBiasClamp = 0.0f;
+        rasterizerDescription.DepthClipEnable = true;
+        rasterizerDescription.FillMode = D3D11_FILL_SOLID;
+        rasterizerDescription.FrontCounterClockwise = false;
+        rasterizerDescription.MultisampleEnable = false;
+        rasterizerDescription.ScissorEnable = false;
+        rasterizerDescription.SlopeScaledDepthBias = 0.0f;
+
+        if (FAILED(m_device->CreateRasterizerState(&rasterizerDescription, &m_rasterizerState)))
+        {
+            return false;
+        }
+
+        m_deviceContext->RSSetState(m_rasterizerState);
+
+        m_viewport.Width = static_cast<float>(windowWidth);
+        m_viewport.Height = static_cast<float>(windowHeight);
+        m_viewport.MaxDepth = 1.0f;
+        m_viewport.MinDepth = 0.0f;
+        m_viewport.TopLeftX = 0.0f;
+        m_viewport.TopLeftY = 0.0f;
+
+        m_deviceContext->RSSetViewports(1, &m_viewport);
+
+        const float fieldOfView = XM_PIDIV4;
+        const float windowAspectRation = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+        m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, windowAspectRation, nearPlane, farPlane);
+        m_worldMatrix = XMMatrixIdentity();
+        m_orthoMatrix = XMMatrixOrthographicLH(static_cast<float>(windowWidth), static_cast<float>(windowHeight), nearPlane, farPlane);
+
+        D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc{};
+        depthDisabledStencilDesc.DepthEnable = false;
+        depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+        depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+        depthDisabledStencilDesc.StencilEnable = true;
+        depthDisabledStencilDesc.StencilReadMask = 0xFF;
+        depthDisabledStencilDesc.StencilWriteMask = 0xFF;
+        depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+        depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+        depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+        depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+        depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+        depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+        depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+        depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+        if (FAILED(m_device->CreateDepthStencilState(&depthDisabledStencilDesc, &m_depthDisabledStencilState)))
+        {
+            return false;
+        }
+
         return true;
     }
 
