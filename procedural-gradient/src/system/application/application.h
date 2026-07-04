@@ -1,5 +1,10 @@
 #pragma once
 
+///////////////////////
+// MY CLASS INCLUDES //
+///////////////////////
+#include "system/application/direct3d/direct3d.h"
+
 namespace GP
 {
     /////////////
@@ -20,6 +25,9 @@ namespace GP
 
     private:
         bool Render();
+
+    private:
+        CDirect3D m_Direct3D;
     };
 
 } // namespace GP

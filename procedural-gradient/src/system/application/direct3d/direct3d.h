@@ -12,6 +12,7 @@ namespace GP
 
     class CDirect3D
     {
+    public:
         CDirect3D();
 
         bool Init(int32_t windowWidth, int32_t windowHeight, bool vsync, HWND hWnd, bool fullscreen, float nearPlane, float farPlane);
@@ -28,11 +29,11 @@ namespace GP
         inline void GetProjectionMatrix(XMMATRIX &projectionMatrix) const;
 
         void GetVideoCardInfo(char *cardName, int32_t &memory) const;
-        void SetBackBufferRenderTarget();
-        void ResetViewport();
+        inline void SetBackBufferRenderTarget();
+        inline void ResetViewport();
 
-        void TurnZBufferOn();
-        void TurnZBufferOff();
+        inline void TurnZBufferOn();
+        inline void TurnZBufferOff();
 
     private:
         IDXGISwapChain *m_swapChain;

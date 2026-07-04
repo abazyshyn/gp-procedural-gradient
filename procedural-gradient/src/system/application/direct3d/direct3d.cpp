@@ -357,22 +357,22 @@ namespace GP
         memory = m_videoCardMemory;
     }
 
-    void CDirect3D::SetBackBufferRenderTarget()
+    inline void CDirect3D::SetBackBufferRenderTarget()
     {
         m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
     }
 
-    void CDirect3D::ResetViewport()
+    inline void CDirect3D::ResetViewport()
     {
         m_deviceContext->RSSetViewports(1, &m_viewport);
     }
 
-    void CDirect3D::TurnZBufferOn()
+    inline void CDirect3D::TurnZBufferOn()
     {
         m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
     }
 
-    void CDirect3D::TurnZBufferOff()
+    inline void CDirect3D::TurnZBufferOff()
     {
         m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
     }
