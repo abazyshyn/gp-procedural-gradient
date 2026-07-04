@@ -20,12 +20,12 @@ namespace GP
         void BeginScene(float red, float green, float blue, float alpha);
         void EndScene();
 
-        ID3D11Device *GetDevice();
-        ID3D11DeviceContext *GetDeviceContext();
+        inline ID3D11Device *GetDevice();
+        inline ID3D11DeviceContext *GetDeviceContext();
 
-        void GetWorldMatrix(XMMATRIX &worldMatrix) const;
-        void GetOrthoMatrix(XMMATRIX &orthoMatrix) const;
-        void GetProjectionMatrix(XMMATRIX &projectionMatrix) const;
+        inline void GetWorldMatrix(XMMATRIX &worldMatrix) const;
+        inline void GetOrthoMatrix(XMMATRIX &orthoMatrix) const;
+        inline void GetProjectionMatrix(XMMATRIX &projectionMatrix) const;
 
         void GetVideoCardInfo(char *cardName, int32_t &memory) const;
         void SetBackBufferRenderTarget();
