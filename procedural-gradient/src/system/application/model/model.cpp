@@ -5,10 +5,17 @@
 namespace GP
 {
 
+    CModel::CModel()
+        : m_vertexBuffer(nullptr),
+          m_indexBuffer(nullptr),
+          m_vertexCount(0),
+          m_indexCount(0)
+    {
+    }
+
     bool CModel::Init(ID3D11Device *device, ID3D11DeviceContext *deviceContext)
     {
-        bool result = InitBuffers(device);
-        if (!result)
+        if (!InitBuffers(device))
         {
             return false;
         }
@@ -19,6 +26,16 @@ namespace GP
     void CModel::Shutdown()
     {
         ShutdownBuffers();
+    }
+
+    void CModel::Render(ID3D11DeviceContext *deviceContext)
+    {
+        RenderBuffers(deviceContext);
+    }
+
+    inline int32_t CModel::GetIndexCount() const
+    {
+        return m_indexCount;
     }
 
     bool CModel::InitBuffers(ID3D11Device *device)
@@ -74,6 +91,32 @@ namespace GP
         }
 
         return true;
+    }
+
+    void CModel::ShutdownBuffers()
+    {
+        if (m_vertexBuffer)
+        {
+            m_vertexBuffer->Release();
+            m_vertexBuffer = nullptr;
+        }
+        if (m_indexBuffer)
+        {
+            m_indexBuffer->Release();
+            m_indexBuffer = nullptr;
+        }
+    }
+
+    void CModel::RenderBuffers(ID3D11DeviceContext *deviceContext)
+    {
+        const uint32_t vertexBufferStride = static_cast<uint32_t>(sizeof(Vertex_s));
+        const uint32_t vertexBufferOffset = 0;
+
+        deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &vertexBufferStride, &vertexBufferOffset);
+
+        deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+        deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     }
 
 } // namespace GP

@@ -4,6 +4,7 @@
 // MY CLASS INCLUDES //
 ///////////////////////
 #include "system/application/direct3d/direct3d.h"
+#include "system/application/model/model.h"
 
 namespace GP
 {
@@ -28,6 +29,7 @@ namespace GP
 
     private:
         CDirect3D m_Direct3D;
+        CModel m_Model;
     };
 
 } // namespace GP

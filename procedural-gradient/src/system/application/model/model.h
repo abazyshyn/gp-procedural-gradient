@@ -6,6 +6,8 @@ namespace GP
     class CModel
     {
     public:
+        CModel();
+
         bool Init(ID3D11Device *device, ID3D11DeviceContext *deviceContext);
         void Shutdown();
         void Render(ID3D11DeviceContext *deviceContext);
@@ -15,7 +17,7 @@ namespace GP
     private:
         bool InitBuffers(ID3D11Device *device);
         void ShutdownBuffers();
-        void RenderBuffers();
+        void RenderBuffers(ID3D11DeviceContext *deviceContext);
 
     private:
         struct Vertex_s

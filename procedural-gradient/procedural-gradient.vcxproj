@@ -28,12 +28,14 @@
     </ClCompile>
     <ClCompile Include="src\system\application\application.cpp" />
     <ClCompile Include="src\system\application\direct3d\direct3d.cpp" />
+    <ClCompile Include="src\system\application\model\model.cpp" />
     <ClCompile Include="src\system\system.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\system\application\application.h" />
     <ClInclude Include="src\system\application\direct3d\direct3d.h" />
+    <ClInclude Include="src\system\application\model\model.h" />
     <ClInclude Include="src\system\system.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
