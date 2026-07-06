@@ -31,6 +31,13 @@ namespace GP
         ShutdownShader();
     }
 
+    bool CPGradientShader::Render(ID3D11DeviceContext *deviceContext, int32_t indexCount)
+    {
+        RenderShader(deviceContext, indexCount);
+
+        return true;
+    }
+
     bool CPGradientShader::InitShader(ID3D11Device *device, HWND hWnd, const std::filesystem::path &vsFilename, const std::filesystem::path &psFilename)
     {
         ID3D10Blob *errorMessage = nullptr;
@@ -147,6 +154,25 @@ namespace GP
         }
     }
 
+    void CPGradientShader::OutputShaderErrorMessage(ID3D10Blob *errorMessage, HWND hWnd, const std::filesystem::path &shaderFilename)
+    {
+        char *compileErrors = static_cast<char *>(errorMessage->GetBufferPointer());
+        size_t bufferSize = errorMessage->GetBufferSize();
+
+        std::ofstream fout;
+        fout.open("shader-error.txt");
+
+        for (size_t i = 0; i < bufferSize; ++i)
+        {
+            fout << compileErrors[i];
+        }
+
+        fout.close();
+        errorMessage->Release();
+        errorMessage = nullptr;
+        MessageBox(hWnd, L"Error compiling shader. Check shader-error.txt for message.", shaderFilename.c_str(), MB_OK);
+    }
+
     bool CPGradientShader::SetShaderMatrixBuffer(ID3D11DeviceContext *deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
     {
         D3D11_MAPPED_SUBRESOURCE mappedResource{};
@@ -168,6 +194,14 @@ namespace GP
         deviceContext->VSSetConstantBuffers(matrixBufferPosition, 1, &m_matrixBuffer);
 
         return true;
+    }
+
+    void CPGradientShader::RenderShader(ID3D11DeviceContext *deviceContext, int32_t indexCount)
+    {
+        deviceContext->IASetInputLayout(m_inputLayout);
+        deviceContext->VSSetShader(m_vertexShader, nullptr, 0);
+        deviceContext->PSSetShader(m_pixelShader, nullptr, 0);
+        deviceContext->DrawIndexed(indexCount, 0, 0);
     }
 
 } // namespace GP
