@@ -46,7 +46,7 @@ namespace GP
         vertices[3].position = XMFLOAT3(1.0f, 1.0f, 0.0f);
         vertices[3].color = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 
-        std::vector<uint64_t> indices = {0, 1, 2, 2, 1, 3};
+        std::vector<uint32_t> indices = {0, 1, 2, 2, 1, 3};
         m_indexCount = static_cast<int32_t>(indices.size());
 
         D3D11_BUFFER_DESC vertexBufferDescription{};
@@ -69,7 +69,7 @@ namespace GP
 
         D3D11_BUFFER_DESC indexBufferDescription{};
         indexBufferDescription.Usage = D3D11_USAGE_DEFAULT;
-        indexBufferDescription.ByteWidth = static_cast<uint32_t>(indices.size()) * sizeof(uint64_t);
+        indexBufferDescription.ByteWidth = static_cast<uint32_t>(indices.size()) * sizeof(uint32_t);
         indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
         indexBufferDescription.CPUAccessFlags = 0;
         indexBufferDescription.MiscFlags = 0;

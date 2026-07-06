@@ -53,7 +53,7 @@ namespace GP
         XMMATRIX projectionMatrix = XMMatrixIdentity();
         m_Direct3D.GetWorldMatrix(worldMatrix);
         // TODO: m_Camera.GetViewMatrix(viewMatrix);
-        m_Direct3D.GetProjectionMatrix(projectionMatrix);
+        // m_Direct3D.GetProjectionMatrix(projectionMatrix);
 
         m_Model.Render(m_Direct3D.GetDeviceContext());
         m_PGradientShader.SetShaderMatrixBuffer(m_Direct3D.GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);

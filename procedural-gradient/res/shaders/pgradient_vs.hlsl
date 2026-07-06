@@ -13,7 +13,7 @@ cbuffer MatrixBuffer
 //////////////
 struct VertexInput_s
 {
-    float4 position : POSITION;
+    float3 position : POSITION;
     float4 color : COLOR;
 };
 
@@ -30,8 +30,8 @@ PixelInput_s PGradientVertexShader(VertexInput_s input)
 {
     PixelInput_s output;
     
-    input.position.w = 1.0f;
-    output.position = mul(input.position, worldMatrix);
+    float4 position = float4(input.position, 1.0f);
+    output.position = mul(position, worldMatrix);
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
     
