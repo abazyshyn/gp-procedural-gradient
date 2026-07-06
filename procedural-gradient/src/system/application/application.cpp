@@ -46,18 +46,18 @@ namespace GP
 
     bool CApplication::Render()
     {
-        m_Direct3D.BeginScene(1.0f, 1.0f, 1.0f, 1.0f);
+        m_Direct3D.BeginScene(0.0f, 1.0f, 1.0f, 1.0f);
 
-        // XMMATRIX worldMatrix{};
-        // XMMATRIX viewMatrix{};
-        // XMMATRIX projectionMatrix{};
-        // m_Direct3D.GetWorldMatrix(worldMatrix);
-        //// TODO: m_Camera.GetViewMatrix(viewMatrix);
-        // m_Direct3D.GetProjectionMatrix(projectionMatrix);
+        XMMATRIX worldMatrix{};
+        XMMATRIX viewMatrix{};
+        XMMATRIX projectionMatrix{};
+        m_Direct3D.GetWorldMatrix(worldMatrix);
+        // TODO: m_Camera.GetViewMatrix(viewMatrix);
+        m_Direct3D.GetProjectionMatrix(projectionMatrix);
 
-        // m_Model.Render(m_Direct3D.GetDeviceContext());
-        // m_PGradientShader.SetShaderMatrixBuffer(m_Direct3D.GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);
-        // m_PGradientShader.Render(m_Direct3D.GetDeviceContext(), m_Model.GetIndexCount());
+        m_Model.Render(m_Direct3D.GetDeviceContext());
+        m_PGradientShader.SetShaderMatrixBuffer(m_Direct3D.GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);
+        m_PGradientShader.Render(m_Direct3D.GetDeviceContext(), m_Model.GetIndexCount());
 
         m_Direct3D.EndScene();
 

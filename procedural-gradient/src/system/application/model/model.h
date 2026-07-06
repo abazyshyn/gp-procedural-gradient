@@ -12,7 +12,7 @@ namespace GP
         void Shutdown();
         void Render(ID3D11DeviceContext *deviceContext);
 
-        inline int32_t GetIndexCount() const;
+        int32_t GetIndexCount() const { return m_indexCount; };
 
     private:
         bool InitBuffers(ID3D11Device *device);

@@ -325,31 +325,6 @@ namespace GP
         }
     }
 
-    inline ID3D11Device *CDirect3D::GetDevice()
-    {
-        return m_device;
-    }
-
-    inline ID3D11DeviceContext *CDirect3D::GetDeviceContext()
-    {
-        return m_deviceContext;
-    }
-
-    inline void CDirect3D::GetWorldMatrix(XMMATRIX &worldMatrix) const
-    {
-        worldMatrix = m_worldMatrix;
-    }
-
-    inline void CDirect3D::GetOrthoMatrix(XMMATRIX &orthoMatrix) const
-    {
-        orthoMatrix = m_orthoMatrix;
-    }
-
-    inline void CDirect3D::GetProjectionMatrix(XMMATRIX &projectionMatrix) const
-    {
-        projectionMatrix = m_projectionMatrix;
-    }
-
     void CDirect3D::GetVideoCardInfo(char *cardName, int32_t &memory) const
     {
         constexpr size_t BYTES = 128;
@@ -357,22 +332,22 @@ namespace GP
         memory = m_videoCardMemory;
     }
 
-    inline void CDirect3D::SetBackBufferRenderTarget()
+    void CDirect3D::SetBackBufferRenderTarget()
     {
         m_deviceContext->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView);
     }
 
-    inline void CDirect3D::ResetViewport()
+    void CDirect3D::ResetViewport()
     {
         m_deviceContext->RSSetViewports(1, &m_viewport);
     }
 
-    inline void CDirect3D::TurnZBufferOn()
+    void CDirect3D::TurnZBufferOn()
     {
         m_deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
     }
 
-    inline void CDirect3D::TurnZBufferOff()
+    void CDirect3D::TurnZBufferOff()
     {
         m_deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
     }

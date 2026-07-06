@@ -33,11 +33,6 @@ namespace GP
         RenderBuffers(deviceContext);
     }
 
-    inline int32_t CModel::GetIndexCount() const
-    {
-        return m_indexCount;
-    }
-
     bool CModel::InitBuffers(ID3D11Device *device)
     {
         std::vector<Vertex_s> vertices{};

@@ -21,16 +21,16 @@ namespace GP
         void BeginScene(float red, float green, float blue, float alpha);
         void EndScene();
 
-        inline ID3D11Device *GetDevice();
-        inline ID3D11DeviceContext *GetDeviceContext();
+        ID3D11Device *GetDevice() { return m_device; };
+        ID3D11DeviceContext *GetDeviceContext() { return m_deviceContext; };
 
-        inline void GetWorldMatrix(XMMATRIX &worldMatrix) const;
-        inline void GetOrthoMatrix(XMMATRIX &orthoMatrix) const;
-        inline void GetProjectionMatrix(XMMATRIX &projectionMatrix) const;
+        void GetWorldMatrix(XMMATRIX &worldMatrix) const { worldMatrix = m_worldMatrix; };
+        void GetOrthoMatrix(XMMATRIX &orthoMatrix) const { orthoMatrix = m_orthoMatrix; };
+        void GetProjectionMatrix(XMMATRIX &projectionMatrix) const { projectionMatrix = m_projectionMatrix; };
 
         void GetVideoCardInfo(char *cardName, int32_t &memory) const;
-        inline void SetBackBufferRenderTarget();
-        inline void ResetViewport();
+        void SetBackBufferRenderTarget();
+        void ResetViewport();
 
         inline void TurnZBufferOn();
         inline void TurnZBufferOff();
