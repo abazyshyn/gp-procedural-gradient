@@ -48,9 +48,9 @@ namespace GP
     {
         m_Direct3D.BeginScene(0.0f, 1.0f, 1.0f, 1.0f);
 
-        XMMATRIX worldMatrix{};
-        XMMATRIX viewMatrix{};
-        XMMATRIX projectionMatrix{};
+        XMMATRIX worldMatrix = XMMatrixIdentity();
+        XMMATRIX viewMatrix = XMMatrixIdentity();
+        XMMATRIX projectionMatrix = XMMatrixIdentity();
         m_Direct3D.GetWorldMatrix(worldMatrix);
         // TODO: m_Camera.GetViewMatrix(viewMatrix);
         m_Direct3D.GetProjectionMatrix(projectionMatrix);

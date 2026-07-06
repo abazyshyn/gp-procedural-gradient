@@ -11,6 +11,11 @@ namespace GP
         int32_t windowHeight = 0;
         InitWindows(windowWidth, windowHeight);
 
+        if (!m_Application.Init(windowWidth, windowHeight, m_hWnd))
+        {
+            return true;
+        }
+
         return true;
     }
 
@@ -58,6 +63,11 @@ namespace GP
 
     bool CSystem::Frame()
     {
+        if (!m_Application.Frame())
+        {
+            return false;
+        }
+
         return true;
     }
 

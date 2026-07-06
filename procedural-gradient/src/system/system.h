@@ -26,6 +26,7 @@ namespace GP
         HWND m_hWnd;
         HINSTANCE m_hInstance;
         LPCWSTR m_applicationName;
+        CApplication m_Application;
     };
 
     /////////////

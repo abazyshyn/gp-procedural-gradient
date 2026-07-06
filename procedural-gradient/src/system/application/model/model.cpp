@@ -35,7 +35,7 @@ namespace GP
 
     bool CModel::InitBuffers(ID3D11Device *device)
     {
-        std::vector<Vertex_s> vertices{};
+        std::array<Vertex_s, 4> vertices{};
         m_vertexCount = static_cast<int32_t>(vertices.size());
         vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
         vertices[0].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);

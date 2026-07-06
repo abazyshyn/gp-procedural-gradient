@@ -59,7 +59,7 @@ namespace GP
             return false;
         }
 
-        if (FAILED(D3DCompileFromFile(psFilename.c_str(), nullptr, nullptr, "PGradientPixelShader", "vs_5_0",
+        if (FAILED(D3DCompileFromFile(psFilename.c_str(), nullptr, nullptr, "PGradientPixelShader", "ps_5_0",
                                       D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBuffer, &errorMessage)))
         {
             if (errorMessage)
