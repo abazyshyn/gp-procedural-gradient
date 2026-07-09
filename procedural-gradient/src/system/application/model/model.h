@@ -23,13 +23,13 @@ namespace GP
         struct Vertex_s
         {
             XMFLOAT3 position;
-            XMFLOAT4 color;
         };
 
         ID3D11Buffer *m_vertexBuffer;
         ID3D11Buffer *m_indexBuffer;
         int32_t m_vertexCount;
         int32_t m_indexCount;
+        int32_t m_rgbPosition;
     };
 
 } // namespace GP

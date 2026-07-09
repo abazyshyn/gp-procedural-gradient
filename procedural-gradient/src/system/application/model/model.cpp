@@ -9,7 +9,8 @@ namespace GP
         : m_vertexBuffer(nullptr),
           m_indexBuffer(nullptr),
           m_vertexCount(0),
-          m_indexCount(0)
+          m_indexCount(0),
+          m_rgbPosition(0)
     {
     }
 
@@ -38,13 +39,9 @@ namespace GP
         std::array<Vertex_s, 4> vertices{};
         m_vertexCount = static_cast<int32_t>(vertices.size());
         vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
-        vertices[0].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
         vertices[1].position = XMFLOAT3(-1.0f, 1.0f, 0.0f);
-        vertices[1].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
         vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);
-        vertices[2].color = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
         vertices[3].position = XMFLOAT3(1.0f, 1.0f, 0.0f);
-        vertices[3].color = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
 
         std::vector<uint32_t> indices = {0, 1, 2, 2, 1, 3};
         m_indexCount = static_cast<int32_t>(indices.size());

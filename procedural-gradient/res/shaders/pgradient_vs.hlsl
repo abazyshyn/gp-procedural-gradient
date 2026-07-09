@@ -14,13 +14,11 @@ cbuffer MatrixBuffer
 struct VertexInput_s
 {
     float3 position : POSITION;
-    float4 color : COLOR;
 };
 
 struct PixelInput_s
 {
     float4 position : SV_POSITION;
-    float4 color : COLOR;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,8 +32,6 @@ PixelInput_s PGradientVertexShader(VertexInput_s input)
     output.position = mul(position, worldMatrix);
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
-    
-    output.color = input.color;
     
     return output;
 }
