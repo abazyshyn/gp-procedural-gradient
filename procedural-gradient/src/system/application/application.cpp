@@ -13,8 +13,8 @@ namespace GP
             return false;
         }
 
-        m_Camera.SetPosition(0.0f, 0.0f, -10.0f);
-        m_Camera.SetRotation(0.0f, 0.0f, 0.0f);
+        m_Camera.SetPosition(0.0f, 1.5f, -5.0f);
+        m_Camera.SetRotation(15.0f, 0.0f, 0.0f);
 
         if (!m_Model.Init(m_Direct3D.GetDevice(), m_Direct3D.GetDeviceContext(), "cube.txt"))
         {
@@ -40,11 +40,8 @@ namespace GP
     bool CApplication::Frame()
     {
         static float rotation = 0.0f;
-        rotation -= 0.0174532925f * 0.8f;
-        if (rotation < 0.0f)
-        {
-            rotation += XM_2PI;
-        }
+        rotation -= XMConvertToRadians(0.8f);
+        rotation = XMScalarModAngle(rotation);
 
         if (!Render(rotation))
         {
