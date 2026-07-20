@@ -14,8 +14,13 @@ namespace GP
     {
     }
 
-    bool CModel::Init(ID3D11Device *device, ID3D11DeviceContext *deviceContext)
+    bool CModel::Init(ID3D11Device *device, ID3D11DeviceContext *deviceContext, std::string modelFilename)
     {
+        if (!LoadModel(modelFilename))
+        {
+            return false;
+        }
+
         if (!InitBuffers(device))
         {
             return false;
@@ -36,19 +41,17 @@ namespace GP
 
     bool CModel::InitBuffers(ID3D11Device *device)
     {
-        std::array<Vertex_s, 4> vertices{};
-        m_vertexCount = static_cast<int32_t>(vertices.size());
-        vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
-        vertices[1].position = XMFLOAT3(-1.0f, 1.0f, 0.0f);
-        vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);
-        vertices[3].position = XMFLOAT3(1.0f, 1.0f, 0.0f);
-
-        std::vector<uint32_t> indices = {0, 1, 2, 2, 1, 3};
-        m_indexCount = static_cast<int32_t>(indices.size());
+        std::vector<Vertex_s> vertices(static_cast<size_t>(m_vertexCount));
+        std::vector<uint32_t> indices(static_cast<size_t>(m_indexCount));
+        for (size_t i = 0; i < vertices.size(); ++i)
+        {
+            vertices[i].position = XMFLOAT3(m_modelData[i].x, m_modelData[i].y, m_modelData[i].z);
+            indices[i] = static_cast<uint32_t>(i);
+        }
 
         D3D11_BUFFER_DESC vertexBufferDescription{};
         vertexBufferDescription.Usage = D3D11_USAGE_DEFAULT;
-        vertexBufferDescription.ByteWidth = static_cast<uint32_t>(vertices.size()) * sizeof(Vertex_s);
+        vertexBufferDescription.ByteWidth = static_cast<uint32_t>(vertices.size()) * static_cast<uint32_t>(sizeof(Vertex_s));
         vertexBufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         vertexBufferDescription.CPUAccessFlags = 0;
         vertexBufferDescription.MiscFlags = 0;
@@ -109,6 +112,49 @@ namespace GP
         deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
         deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    }
+
+    bool CModel::LoadModel(std::string modelFilename)
+    {
+        std::filesystem::path modelFilepath{std::filesystem::current_path() / "res" / "models" / modelFilename};
+
+        std::ifstream fin;
+        fin.open(modelFilepath);
+        if (!fin.is_open())
+        {
+            return false;
+        }
+
+        char input{};
+        fin.get(input);
+        while (input != ':')
+        {
+            fin.get(input);
+        }
+
+        fin >> m_vertexCount;
+        m_indexCount = m_vertexCount;
+
+        m_modelData.resize(m_vertexCount);
+
+        fin.get(input);
+        while (input != ':')
+        {
+            fin.get(input);
+        }
+        fin.get(input);
+        fin.get(input);
+
+        for (Model_s &data : m_modelData)
+        {
+            fin >> data.x >> data.y >> data.z;
+            fin >> data.tu >> data.tv;
+            fin >> data.nx >> data.ny >> data.nz;
+        }
+
+        fin.close();
+
+        return true;
     }
 
 } // namespace GP

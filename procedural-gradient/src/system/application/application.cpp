@@ -13,7 +13,10 @@ namespace GP
             return false;
         }
 
-        if (!m_Model.Init(m_Direct3D.GetDevice(), m_Direct3D.GetDeviceContext()))
+        m_Camera.SetPosition(0.0f, 0.0f, -10.0f);
+        m_Camera.SetRotation(0.0f, 0.0f, 0.0f);
+
+        if (!m_Model.Init(m_Direct3D.GetDevice(), m_Direct3D.GetDeviceContext(), "cube.txt"))
         {
             MessageBox(hWnd, L"Could not initialize model", L"Error", MB_OK);
             return false;
@@ -36,7 +39,14 @@ namespace GP
 
     bool CApplication::Frame()
     {
-        if (!Render())
+        static float rotation = 0.0f;
+        rotation -= 0.0174532925f * 0.8f;
+        if (rotation < 0.0f)
+        {
+            rotation += XM_2PI;
+        }
+
+        if (!Render(rotation))
         {
             return false;
         }
@@ -44,16 +54,21 @@ namespace GP
         return true;
     }
 
-    bool CApplication::Render()
+    bool CApplication::Render(float rotation)
     {
-        m_Direct3D.BeginScene(0.0f, 1.0f, 1.0f, 1.0f);
+        m_Direct3D.BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
+        m_Camera.Render();
 
-        XMMATRIX worldMatrix = XMMatrixIdentity();
-        XMMATRIX viewMatrix = XMMatrixIdentity();
-        XMMATRIX projectionMatrix = XMMatrixIdentity();
+        XMMATRIX worldMatrix{XMMatrixIdentity()};
+        XMMATRIX viewMatrix{XMMatrixIdentity()};
+        XMMATRIX projectionMatrix{XMMatrixIdentity()};
         m_Direct3D.GetWorldMatrix(worldMatrix);
-        // TODO: m_Camera.GetViewMatrix(viewMatrix);
-        // m_Direct3D.GetProjectionMatrix(projectionMatrix);
+        m_Camera.GetViewMatrix(viewMatrix);
+        m_Direct3D.GetProjectionMatrix(projectionMatrix);
+
+        XMMATRIX rotationMatrix{XMMatrixRotationY(rotation)};
+        XMMATRIX translationMatrix{XMMatrixTranslation(0.0f, 0.0f, 0.0f)};
+        worldMatrix = XMMatrixMultiply(rotationMatrix, translationMatrix);
 
         m_Model.Render(m_Direct3D.GetDeviceContext());
         m_PGradientShader.SetShaderMatrixBuffer(m_Direct3D.GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);

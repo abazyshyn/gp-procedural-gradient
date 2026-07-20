@@ -3,9 +3,10 @@
 ///////////////////////
 // MY CLASS INCLUDES //
 ///////////////////////
-#include "system/application/direct3d/direct3d.h"
-#include "system/application/model/model.h"
-#include "system/application/shaders/pgradient_shader.h"
+#include "direct3d/direct3d.h"
+#include "model/model.h"
+#include "camera/camera.h"
+#include "shaders/pgradient_shader.h"
 
 namespace GP
 {
@@ -26,11 +27,12 @@ namespace GP
         bool Frame();
 
     private:
-        bool Render();
+        bool Render(float rotation);
 
     private:
         CDirect3D m_Direct3D;
         CModel m_Model;
+        CCamera m_Camera;
         CPGradientShader m_PGradientShader;
     };
 
